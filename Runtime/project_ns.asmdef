@@ -1,0 +1,15 @@
+{
+    "name": "project_ns",
+    "references": [
+        "GUID:33a0d05a98c744ae9baf0f37b6cd5e93"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
