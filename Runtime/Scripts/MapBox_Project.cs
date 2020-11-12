@@ -2,7 +2,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel;
-
+#if USE_MAPBOX
+using Mapbox.Unity.Map;
+#endif
 
 namespace Project {
 
@@ -12,7 +14,6 @@ namespace Project {
 
         public struct MapBoxData {
 #if USE_MAPBOX
-using Mapbox.Unity.Map;
             [JsonProperty(PropertyName = "mapscale", Required = Required.Always)]
             public Int32 MapScale;
             [JsonProperty(PropertyName = "map_size")]
