@@ -56,7 +56,7 @@ namespace Project
         [JsonProperty(PropertyName = "transform")]
         public JsonTransform Transform;
         [JsonProperty(PropertyName = "properties")]
-        public Dictionary<string, object> Properties;
+        public GeogData Properties;
         [JsonProperty(PropertyName = "visible", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         [DefaultValue(true)]
         public bool Visible;
@@ -137,21 +137,7 @@ namespace Project
                     IList<JObject> sets = jarray.Select(c => (JObject)c).ToList();
                     List<RecordSet> result = new List<RecordSet>();
                     foreach (JObject set in sets) {
-                        Type type = RecordSetCollectionType.Get((RecordSetDataType) Enum.Parse(typeof(RecordSetDataType), set["datatype"].ToString()));
-                        switch (type) {
-                            case Type _ when type == typeof(GeographyCollection):
-                                result.Add(set.ToObject(typeof(GeographyCollection)) as GeographyCollection);
-                                break;
-                            case Type _ when type == typeof(GeologyCollection):
-                                result.Add(set.ToObject(typeof(GeologyCollection)) as GeologyCollection);
-                                break;
-                            case Type _ when type == typeof(MapBox):
-                                result.Add(set.ToObject(typeof(MapBox)) as MapBox);
-                                break;
-                            default:
-                                result.Add(set.ToObject(typeof(RecordSet)) as RecordSet);
-                                break;
-                        }
+                        result.Add(set.ToObject(typeof(RecordSet)) as RecordSet);
                     }
                     return result;
             }
@@ -166,43 +152,36 @@ namespace Project
         }
     }
 
-
-    public enum RecordSetType
-    {
-        RecordSet,
-        MapBox,
-        GeologyCollection,
-        GeographyCollection
-    }
-
-    public class GeographyCollection : RecordSet
-    {
-        [JsonProperty(PropertyName = "properties")]
-        public new GeogData Properties;
-
-        public struct GeogData {
-            [JsonProperty(PropertyName = "units", Required = Required.Always)]
-            public Dictionary<string, Unit> Units;
-            [JsonProperty(PropertyName = "dem")]
-            public string Dem;
-            [JsonProperty(PropertyName = "colorinterp")]
-            public Dictionary<string, object> ColorInterp;
-            [JsonProperty(PropertyName = "filter")]
-            public List<Dictionary<string, object>> Filter;
-            [JsonProperty(PropertyName = "bbox")]
-            public List<double> BBox;
-            [JsonProperty(PropertyName = "source-type", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-            [DefaultValue(SourceType.File)]
-            public SourceType SourceType;
-            [JsonProperty(PropertyName = "read-only", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-            [DefaultValue(false)]
-            public bool ReadOnly;
-        }
-    }
-
-    public class  GeologyCollection : GeographyCollection
-    {
-       
+    public struct GeogData {
+        [JsonProperty(PropertyName = "units")]
+        public Dictionary<string, Unit> Units;
+        [JsonProperty(PropertyName = "dem")]
+        public string Dem;
+        [JsonProperty(PropertyName = "colorinterp")]
+        public Dictionary<string, object> ColorInterp;
+        [JsonProperty(PropertyName = "filter")]
+        public List<Dictionary<string, object>> Filter;
+        [JsonProperty(PropertyName = "bbox")]
+        public List<double> BBox;
+        [JsonProperty(PropertyName = "source-type", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(SourceType.File)]
+        public SourceType SourceType;
+        [JsonProperty(PropertyName = "read-only", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(false)]
+        public bool ReadOnly;
+        [JsonProperty(PropertyName = "mapscale")]
+        public Int32 MapScale;
+        [JsonProperty(PropertyName = "map_size")]
+        public int MapSize;
+        [JsonProperty(PropertyName = "elevation_source_type", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue("MapboxTerrain")]
+        public string elevationSourceType;
+        [JsonProperty(PropertyName = "elevation_layer_type", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue("FlatTerrain")]
+        public string elevationLayerType;
+        [JsonProperty(PropertyName = "imagery_source_type", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue("MapboxOutdoors")]
+        public string imagerySourceType;
     }
 
 
@@ -216,36 +195,11 @@ namespace Project
         PointCloud,
         Mesh,
         Mdal,
-        Record,
-        CSV, 
         Point,
         Line,
         Polygon,
         DEM,
         Graph
-    }
-
-    /// <summary>
-    /// Used as a lookup to tell which recordset definition should be used with which layer type
-    /// </summary>
-    public class RecordSetCollectionType {
-        public static Type Get(RecordSetDataType rs) {
-            switch (rs) {
-                case RecordSetDataType.MapBox: return typeof(MapBox);
-                case RecordSetDataType.Vector: return typeof(GeographyCollection);
-                case RecordSetDataType.Raster: return typeof(GeographyCollection);
-                case RecordSetDataType.PointCloud: return typeof(GeographyCollection);
-                case RecordSetDataType.Mesh: return typeof(GeographyCollection);
-                case RecordSetDataType.Mdal: return typeof(GeographyCollection);
-                case RecordSetDataType.Record: return typeof(RecordSet);
-                case RecordSetDataType.CSV: return typeof(RecordSet);
-                case RecordSetDataType.Point: return typeof(GeographyCollection);
-                case RecordSetDataType.Line: return typeof(GeographyCollection);
-                case RecordSetDataType.Polygon: return typeof(GeographyCollection);
-                case RecordSetDataType.DEM: return typeof(GeographyCollection);
-                default: return typeof(RecordSet);
-            }
-        }
     }
 
 
