@@ -13,6 +13,14 @@ namespace Project
 {
     public class GisProject : TestableObject
     {
+        private const string TYPE = "project";
+        private const string VERSION = "1.0.1";
+
+        public string GetVersion()
+        {
+            return $"{TYPE}:{VERSION}";
+        }
+        
         [JsonProperty(PropertyName = "version", Required = Required.Always)]
         public string ProjectVersion;
 
