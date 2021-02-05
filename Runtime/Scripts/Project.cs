@@ -16,7 +16,7 @@ namespace Project
         private const string TYPE = "project";
         private const string VERSION = "1.0.1";
 
-        public string GetVersion()
+        public static string GetVersion()
         {
             return $"{TYPE}:{VERSION}";
         }
