@@ -189,6 +189,4 @@ namespace Project
         [JsonProperty(PropertyName = "units")]
         public new Dictionary<string, Unit> Units;
     }
-}    }
-
 }
