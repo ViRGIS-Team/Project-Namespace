@@ -126,7 +126,6 @@ namespace Project
             get { return m_Path; }
             set { 
                 m_Path = value;
-                bhdata.path = value;
             }
         }
 

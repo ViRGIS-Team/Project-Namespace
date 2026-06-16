@@ -1,7 +1,9 @@
 {
     "name": "project_ns",
+    "rootNamespace": "",
     "references": [
-        "GeoJSON.NET"
+        "GeoJSON.NET",
+        "virgis.types"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
