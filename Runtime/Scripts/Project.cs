@@ -50,7 +50,12 @@ namespace Project
 
         [JsonProperty(PropertyName = "datatype", Required = Required.Always)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public RecordSetDataType DataType;
+        public RecordSetDataType DataType
+        {
+            get => (RecordSetDataType)DataTypeValue;
+            set => DataTypeValue = (int)value;
+        }
+        
         public override string Source 
         { get { return Path.GetFullPath(Path.Combine( path, m_source)); }
           set { m_source = value; } 
